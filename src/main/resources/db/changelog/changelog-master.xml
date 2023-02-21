@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd
+      http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.5.xsd">
+    <changeSet id="v1" author="MaxP">
+        <createTable tableName="cars">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="car_id_pk" nullable="false"/>
+            </column>
+            <column name="color" type="VARCHAR(255)">
+                <constraints  nullable="false"/>
+            </column>
+            <column name="horsepower" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quantity" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addAutoIncrement tableName="cars" columnName="id" columnDataType="BIGINT" startWith="1" incrementBy="1" />
+    </changeSet>
+</databaseChangeLog>

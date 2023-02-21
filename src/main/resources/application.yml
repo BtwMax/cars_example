@@ -1,0 +1,14 @@
+server:
+  port: 8082
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/Cars
+    username: postgres
+    password: 12631263
+  liquibase:
+    url: jdbc:postgresql://localhost:5432/Cars
+    change-log: classpath:/db/changelog/changelog-master.xml
+    enabled: true
+    user: postgres
+    password: 12631263
