@@ -10,5 +10,5 @@ public interface CarsRepository extends JpaRepository<Cars, Long> {
     List<Cars> findByColorAndHorsepowerLessThan(String color, int horsePower);
     List<Cars> findByColorAndHorsepowerGreaterThan(String color, int horsePower);
     List<Cars> findByColorAndHorsepowerEquals(String color, int horsepower);
-    Optional<Cars> findByColorAndAndHorsepower(String color, int horsepower);
+    Optional<Cars> findByColorAndHorsepower(String color, int horsepower);
 }

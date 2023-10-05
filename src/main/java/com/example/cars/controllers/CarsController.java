@@ -1,11 +1,14 @@
 package com.example.cars.controllers;
 
-import com.example.cars.model.Cars;
-import com.example.cars.model.Result;
+import com.example.cars.dto.CarsDto;
+import com.example.cars.dto.IncomingCarsDto;
+import com.example.cars.enums.Operations;
+import com.example.cars.exception.exceptions.ValidationException;
 import com.example.cars.service.CarService;
-import org.springframework.ui.Model;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -14,33 +17,27 @@ public class CarsController {
 
     private final CarService carService;
 
+    @Autowired
     public CarsController(CarService carService) {
         this.carService = carService;
     }
 
     @GetMapping("/cars")
-    public Result getCars(@RequestParam("color") String color,
-                              @RequestParam("operation") String operation,
-                              @RequestParam("horsepower") int horsepower) {
-        if (color == null || color.equals("") || horsepower <= 0 || operation.equals("")) {
-            return new Result(400, "Параметры запроса отсутствуют или имеют некорректный формат", 0);
-        }
-        return carService.getCars(color, operation, horsepower);
+    public List<CarsDto> getCars(@RequestParam("color") String color,
+                                 @RequestParam("operation") String operation,
+                                 @RequestParam("horsepower") int horsepower) {
+        Operations operationState = Operations.from(operation)
+                .orElseThrow(() -> new ValidationException("Неизвестный параметр operation"));
+        return carService.getCars(color, operationState, horsepower);
     }
 
     @PostMapping ("/cars/income")
-    public Result income(@RequestBody Cars cars) {
-        if (cars.IsInvalid()) {
-            return new Result(400, "Параметры запроса отсутствуют или имеют некорректный формат", 0);
-        }
-         return carService.insertCars(cars);
+    public CarsDto income(@RequestBody @Valid IncomingCarsDto carsDto) {
+         return carService.insertCars(carsDto);
     }
 
     @PostMapping("/cars/outcome")
-    public Result outcome(@RequestBody Cars cars) {
-        if (cars.IsInvalid()) {
-            return new Result(400, "Параметры запроса отсутствуют или имеют некорректный формат", 0);
-        }
-        return carService.deleteCars(cars);
+    public CarsDto outcome(@RequestBody @Valid IncomingCarsDto carsDto) {
+        return carService.outcomeCars(carsDto);
     }
 }
